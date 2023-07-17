@@ -1,0 +1,67 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy1=ListNode()
+        dummy1.next=l1
+        while l1.next:
+            jump=l1.next
+            l1.next=jump.next
+            jump.next=dummy1.next
+            dummy1.next=jump
+        l1=dummy1.next
+
+
+
+        dummy=ListNode()
+        dummy.next=l2
+        while l2.next:
+            jump=l2.next
+            l2.next=jump.next
+            jump.next=dummy.next
+            dummy.next=jump
+        l2=dummy.next
+
+
+        currnode=ListNode()
+        temp=currnode
+        carry=0
+        count=1
+        while l1!=None or l2!=None or carry==1:
+            if l1==None:
+                p=0
+            else:
+                p=l1.val
+            if l2==None:
+                q=0
+            else:
+                q=l2.val
+            s=p+q+carry
+            digit=int(s%10)
+            carry=int(s/10)
+            if count==1:
+                currnode.val=digit
+            else:
+                newnode=ListNode()
+                newnode.val=digit
+                temp.next=newnode
+                temp=temp.next
+            if l1!=None:
+                l1=l1.next
+            if l2!=None:
+                l2=l2.next
+            count-=1
+
+        dummy=ListNode()
+        dummy.next=currnode
+        while currnode.next:
+            jump=currnode.next
+            currnode.next=jump.next
+            jump.next=dummy.next
+            dummy.next=jump
+        currnode=dummy.next
+
+        return currnode
